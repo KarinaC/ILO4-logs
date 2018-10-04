@@ -1,8 +1,6 @@
 #!/usr/bin/expect
-#!/bin/bash 
 
 #Usage <ip> <user> <pass>
-
 
 set timeout 60
 
@@ -14,7 +12,8 @@ expect "yes/no" {
 		        } "*?assword" { send "[lindex $argv 2]\r" }
 
 
-expect "*hpiLO-> " { send "show /system1/log1\r" } >> /tmp/ILO.log
+expect "*hpiLO-> " { send "[lindex $argv 3]\r" } >> /tmp/ILO.log
+#expect "*hpiLO-> " { send "show /system1/log1\r" } >> /tmp/ILO.log
 #expect "# " { send "scope log\r" }
 #expect "# " { send "show entries\r" }
  expect {
