@@ -1,6 +1,8 @@
 #!/bin/bash 
 
 date=`date +"%m/%d/%Y"`
+PID=
+PSEV=
 
 # Vaciamos el log
 echo "" > /tmp/ilotest.log
@@ -12,8 +14,13 @@ echo "" > /tmp/iloout.log
 # Obtenemos los últimos 6 records logs y limpiamos la data
 for rec in `/home/karmukis/Documents/CLARO-ARGENTINA/SCRIPTS/EXPECT/ILO4-logs/ILO-logs.sh "${1}" "${2}" "${3}" "${4}" | grep record | tail -6 | awk -F 'cord' '{print $2}'` 
   do
-    /home/karmukis/Documents/CLARO-ARGENTINA/SCRIPTS/EXPECT/ILO4-logs/ILO-logs.sh "${1}" "${2}" "${3}" "show /system1/log1/record${rec}"  | awk '/Properties/,/Verbs/' >> /tmp/iloout.log
+    /home/karmukis/Documents/CLARO-ARGENTINA/SCRIPTS/EXPECT/ILO4-logs/ILO-logs.sh "${1}" "${2}" "${3}" "show /system1/log1/record${rec}"  | awk '/Properties/,/Verbs/' | egrep "^.*((number=.*$)|(severity=.*$)|(date=.*$)|(time=.*$)|(description=.*$)).*$"  >> /tmp/iloout.log
   done
+
+FR=`cat /tmp/iloout.log `
+echo "${FR}" | awk '{gsub(/^ +| +$/,"")} {print $0 }'
+
+
 
 
 
